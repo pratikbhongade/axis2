@@ -1,0 +1,33 @@
+<service name="FpaServicesSOAP" xmlns="http://ws.apache.org/ns/axis2" targetNamespace="http://fpa.keybank.com/FpaServices/">
+    <description>FpaServices SOAP Service</description>
+    
+    <parameter name="ServiceClass">com.keybank.fpa.FpaServices.FpaServicesSOAPSkeleton</parameter>
+    <parameter name="wsdlTargetNamespace">http://fpa.keybank.com/FpaServices/</parameter>
+    <parameter name="wsdlServiceElement">FpaServices</parameter>
+    <parameter name="wsdlServicePort">FpaServicesSOAP</parameter>
+    <parameter name="wsdlPortType">FpaServices</parameter>
+    <parameter name="typeMappingVersion">1.2</parameter>
+    <parameter name="allowedMethods">*</parameter>
+
+    <!-- Define operations -->
+    <operation name="findPayeeByName">
+        <messageReceiver class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+    </operation>
+    <operation name="findPayeeByID">
+        <messageReceiver class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+    </operation>
+    <operation name="addPayee">
+        <messageReceiver class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+    </operation>
+    <operation name="submitCheckRequest">
+        <messageReceiver class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+    </operation>
+
+    <!-- Schema type mappings -->
+    <schema targetNamespace="http://webservices.fpa.keybank.com/">
+        <complexType name="payeeData" class="com.keybank.fpa.webservices.PayeeData"/>
+        <complexType name="payeeRecord" class="com.keybank.fpa.webservices.PayeeRecord"/>
+        <complexType name="checkRequestRecord" class="com.keybank.fpa.webservices.CheckRequestRecord"/>
+        <complexType name="addPayeeRecord" class="com.keybank.fpa.webservices.AddPayeeRecord"/>
+    </schema>
+</service>
