@@ -1,0 +1,102 @@
+<axisconfig name="AxisJava2.0">
+    
+    <!-- Global Parameters -->
+    <parameter name="hotdeployment">true</parameter>
+    <parameter name="hotupdate">false</parameter>
+    <parameter name="enableMTOM">false</parameter>
+    <parameter name="enableSwA">false</parameter>
+    <parameter name="ConfigContextTimeoutInterval">30000</parameter>
+    <parameter name="sendStacktraceDetailsWithFaults">false</parameter>
+    <parameter name="userName">admin</parameter>
+    <parameter name="password">axis2</parameter>
+    <parameter name="disableREST">false</parameter>
+    <parameter name="disableSOAP12">false</parameter>
+    <parameter name="sendMultiRefs" value="true" />
+    <parameter name="disablePrettyXML" value="true" />
+    <parameter name="adminPassword" value="admin" />
+    <parameter name="attachments.Directory" value="/var/tmp/fpa/attachments" />
+    <parameter name="dotNetSoapEncFix" value="true" />
+    <parameter name="enableNamespacePrefixOptimization" value="false" />
+    <parameter name="sendXMLDeclaration" value="true" />
+    <parameter name="sendXsiTypes" value="true" />
+    <parameter name="attachments.implementation" value="org.apache.axiom.attachments.AttachmentsImpl" />
+
+    <!-- Deployers -->
+    <deployer extension=".aar" directory="services" class="org.apache.axis2.deployment.ServiceDeployer" />
+    <deployer extension=".class" directory="pojo" class="org.apache.axis2.deployment.POJODeployer" />
+    <deployer extension=".jar" directory="servicejars" class="org.apache.axis2.jaxws.framework.JAXWSDeployer" />
+    <deployer extension=".jar" directory="transports" class="org.apache.axis2.deployment.TransportDeployer" />
+
+    <!-- Transport Receivers and Senders -->
+    <transportReceiver name="http" class="org.apache.axis2.transport.http.SimpleHTTPServer">
+        <parameter name="port">8080</parameter>
+    </transportReceiver>
+    <transportReceiver name="local" class="org.apache.axis2.transport.local.LocalTransportReceiver" />
+    <transportSender name="http" class="org.apache.axis2.transport.http.impl.httpclient4.HTTPClient4TransportSender">
+        <parameter name="PROTOCOL">HTTP/1.1</parameter>
+        <parameter name="Transfer-Encoding">chunked</parameter>
+    </transportSender>
+    <transportSender name="https" class="org.apache.axis2.transport.http.impl.httpclient4.HTTPClient4TransportSender">
+        <parameter name="PROTOCOL">HTTP/1.1</parameter>
+        <parameter name="Transfer-Encoding">chunked</parameter>
+    </transportSender>
+
+    <!-- Message Receivers -->
+    <messageReceivers>
+        <messageReceiver mep="http://www.w3.org/ns/wsdl/in-only" class="org.apache.axis2.receivers.RawXMLINOnlyMessageReceiver" />
+        <messageReceiver mep="http://www.w3.org/ns/wsdl/in-out" class="org.apache.axis2.receivers.RawXMLINOutMessageReceiver" />
+    </messageReceivers>
+
+    <!-- Message Formatters -->
+    <messageFormatters>
+        <messageFormatter contentType="application/xml" class="org.apache.axis2.kernel.http.ApplicationXMLFormatter" />
+        <messageFormatter contentType="text/xml" class="org.apache.axis2.kernel.http.SOAPMessageFormatter" />
+        <messageFormatter contentType="application/soap+xml" class="org.apache.axis2.kernel.http.SOAPMessageFormatter" />
+    </messageFormatters>
+
+    <!-- Message Builders -->
+    <messageBuilders>
+        <messageBuilder contentType="application/xml" class="org.apache.axis2.builder.ApplicationXMLBuilder" />
+        <messageBuilder contentType="application/x-www-form-urlencoded" class="org.apache.axis2.builder.XFormURLEncodedBuilder" />
+        <messageBuilder contentType="multipart/form-data" class="org.apache.axis2.builder.MultipartFormDataBuilder" />
+    </messageBuilders>
+
+    <!-- Global Modules -->
+    <module ref="addressing" />
+
+    <!-- Phases -->
+    <phaseOrder type="InFlow">
+        <phase name="Transport" />
+        <phase name="Addressing" />
+        <phase name="Security" />
+        <phase name="PreDispatch" />
+        <phase name="Dispatch" />
+        <phase name="OperationInPhase" />
+        <phase name="soapmonitorPhase" />
+    </phaseOrder>
+    <phaseOrder type="OutFlow">
+        <phase name="soapmonitorPhase" />
+        <phase name="OperationOutPhase" />
+        <phase name="RMPhase" />
+        <phase name="PolicyDetermination" />
+        <phase name="MessageOut" />
+        <phase name="Security" />
+    </phaseOrder>
+    <phaseOrder type="InFaultFlow">
+        <phase name="Addressing" />
+        <phase name="Security" />
+        <phase name="PreDispatch" />
+        <phase name="Dispatch" />
+        <phase name="RMPhase" />
+        <phase name="OperationInFaultPhase" />
+        <phase name="soapmonitorPhase" />
+    </phaseOrder>
+    <phaseOrder type="OutFaultFlow">
+        <phase name="soapmonitorPhase" />
+        <phase name="OperationOutFaultPhase" />
+        <phase name="RMPhase" />
+        <phase name="PolicyDetermination" />
+        <phase name="MessageOut" />
+        <phase name="Security" />
+    </phaseOrder>
+</axisconfig>
